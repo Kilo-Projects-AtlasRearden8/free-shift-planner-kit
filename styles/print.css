@@ -1,0 +1,167 @@
+/* print.css — shared styles for the Free Shift Planner Kit
+   Large-print friendly: 16 pt base type, large checkboxes and headings,
+   wide writing spaces, high contrast. Designed for screen viewing and
+   printing (US Letter). Published by Asdale Dynamics, LLC. */
+
+:root {
+  --ink: #111827;
+  --muted: #4b5563;
+  --line: #cbd5e1;
+  --box: #f1f5f9;
+  --accent: #1e40af;
+}
+
+html {
+  font-size: 16px; /* large-print friendly */
+}
+
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+    sans-serif;
+  color: var(--ink);
+  line-height: 1.7;
+  margin: 0;
+  padding: 18px 22px;
+  background: #ffffff;
+}
+
+.planner {
+  max-width: 100%;
+}
+
+header.planner-header {
+  border-bottom: 3px solid var(--ink);
+  padding-bottom: 10px;
+  margin-bottom: 18px;
+}
+
+h1 {
+  font-size: 26px;
+  margin: 0 0 4px 0;
+  color: var(--ink);
+}
+
+.subtitle {
+  font-size: 15px;
+  color: var(--muted);
+  margin: 0 0 2px 0;
+}
+
+.credit {
+  font-size: 12px;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  margin-top: 14px;
+  padding-top: 8px;
+}
+
+h2 {
+  font-size: 19px;
+  margin: 16px 0 6px 0;
+  border-bottom: 1.5px solid var(--line);
+  padding-bottom: 3px;
+  color: var(--ink);
+}
+
+p, li {
+  font-size: 15px;
+}
+
+ul.tight {
+  margin: 4px 0 10px 0;
+  padding-left: 22px;
+}
+
+ul.tight li {
+  margin-bottom: 6px;
+}
+
+table.grid {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0 14px 0;
+  font-size: 14.5px;
+}
+
+table.grid th {
+  background: var(--box);
+  border: 1px solid var(--line);
+  padding: 8px 6px;
+  text-align: left;
+  font-size: 13.5px;
+  color: var(--ink);
+}
+
+table.grid td {
+  border: 1px solid var(--line);
+  padding: 10px 8px;
+  height: 42px; /* room to write */
+  vertical-align: top;
+}
+
+table.grid td.blank {
+  height: 56px;
+}
+
+label.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  margin-right: 14px;
+}
+
+input.check-box {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+select, input[type="text"], input[type="time"], input[type="date"] {
+  font-size: 15px;
+  padding: 5px 7px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 720px) {
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Print mode ---------- */
+@media print {
+  @page {
+    size: letter;
+    margin: 14mm 12mm;
+  }
+
+  body {
+    padding: 0;
+  }
+
+  .planner-header, h2 {
+    page-break-after: avoid;
+  }
+
+  table.grid, .avoid-break {
+    page-break-inside: avoid;
+  }
+
+  .credit {
+    font-size: 9.5px;
+  }
+
+  a::after {
+    content: " (" attr(href) ")";
+    font-size: 80%;
+    color: var(--muted);
+  }
+}
