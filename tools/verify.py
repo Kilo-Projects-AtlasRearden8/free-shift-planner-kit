@@ -90,6 +90,8 @@ def check_html(path: Path) -> None:
         fail(f"{path.name}: missing Asdale Dynamics, LLC credit")
     if '<input' not in text and '\u2610' not in text:
         fail(f"{path.name}: no printable form inputs")
+    if '<table>' in text:
+        fail(f"{path.name}: table missing class=\"grid\"")
 
 
 def check_css() -> None:

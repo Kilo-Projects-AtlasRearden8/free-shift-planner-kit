@@ -3,7 +3,8 @@
 ## What was built
 
 A complete "Freebies kit" of printable shift planners for nurses and shift
-workers, published by Asdale Dynamics, LLC. The kit includes:
+workers, published by Asdale Dynamics, LLC. The kit includes four planners,
+each in Markdown source and print-ready HTML:
 
 | Planner | Markdown source | Printable HTML |
 |---|---|---|
@@ -14,18 +15,34 @@ workers, published by Asdale Dynamics, LLC. The kit includes:
 
 Plus:
 - `index.html` — hub page linking all four planners
-- `styles/print.css` — shared large-print stylesheet (16 pt base, @media print for US Letter)
-- `LICENSE` — MIT License with exact copyright line "Copyright (c) 2026 Asdale Dynamics, LLC"
+- `styles/print.css` — shared large-print stylesheet (16 pt base, @media print
+  for US Letter, shaded grid headers, writable table rows)
+- `LICENSE` — MIT License with exact line "Copyright (c) 2026 Asdale Dynamics, LLC"
 - `README.md` — overview, usage, credits, license
-- `tools/build.py` — converts Markdown to HTML with template
-- `tools/verify.py` — validation suite (HTML well-formedness, print CSS, credits, no secrets)
+- `tools/build.py` — converts Markdown to HTML with template (tables get
+  `class="grid"`; `- [ ]` task lines become real checkboxes)
+- `tools/verify.py` — validation suite (HTML well-formedness, print CSS,
+  credits, license, grid tables, no secrets)
 
 All files are in the repository root `/workspace/kilo-lab/free-shift-planner-kit`.
+
+## Critical fixes applied during review
+
+- **Tables now use `class="grid"`** — previously all tables were plain `<table>`
+  with no borders or writing-space height. The CSS `table.grid` styles (1px
+  borders, shaded headers, 42 px row height for writing) now apply, so planners
+  render as proper writable grids.
+- **Task-list checkboxes now stack** — `- [ ]` lines previously collapsed into a
+  single inline paragraph. Each checkbox is now wrapped in a block `.task` div
+  so items render vertically, one per line.
+- **README improved** — warmer, clearer, more polished; adds "Who this is for",
+  "What's inside", "How to use", rebuild/verify commands, credit, and license.
 
 ## How to run / use
 
 ### Print the planners (no build needed)
-Open any `planners/*.html` or `index.html` in a browser and print (Ctrl+P / Cmd+P).
+Open any `planners/*.html` or `index.html` in a browser and print (Ctrl+P /
+Cmd+P).
 - US Letter, margins pre-set via @media print
 - Background graphics optional
 - Large-print friendly: 16 pt base, 20 px checkboxes, generous line height
@@ -42,7 +59,8 @@ python3 tools/verify.py
 ```
 Checks:
 - All HTML planners are well-formed
-- Each page has <title>, stylesheet link, and Asdale Dynamics credit
+- Each page has <title>, stylesheet link, checkboxes, and Asdale Dynamics credit
+- All tables use class="grid"
 - Print CSS includes @media print and 16 px base font
 - LICENSE contains the exact required copyright line
 - README credits Asdale Dynamics, LLC
@@ -51,24 +69,31 @@ Checks:
 ## Verification results
 
 ```
+$ python3 tools/build.py
+built planners/brain-sheet.html
+built planners/handoff-template.html
+built planners/sleep-log.html
+built planners/weekly-schedule.html
+built 4 planner(s)
+
 $ python3 tools/verify.py
 all checks passed (4 HTML planners, CSS, LICENSE, README).
 ```
 
-Git repository initialized with a single commit (plain message, no Co-authored-by
+Git repository initialized with commits (plain messages, no Co-authored-by
 trailers, no remote, no push).
 
 ## Known gaps / future improvements
 
 1. **No interactive fill-in** — HTML is print-first; form inputs are checkboxes
-   only, no localStorage save/restore. This is by design (privacy, no account).
+   only, no localStorage save/restore. By design (privacy, no account).
 
 2. **Task list conversion** — Only GFM-style `- [ ]` lines become real
-   `<input type="checkbox">`. Checkbox glyphs (☐) in tables remain glyphs; they
-   print fine but aren't interactive. Acceptable for paper use.
+   `<input type="checkbox">`. Checkbox glyphs (☐) inside tables remain glyphs;
+   they print fine but aren't interactive. Acceptable for paper use.
 
 3. **Markdown-to-HTML dependency** — `build.py` uses `python-markdown`.
-   Standard library only (`html.parser`) is used for verification.
+   Verification uses only the standard library (`html.parser`).
 
 4. **No automated test suite** beyond `verify.py` — the verification script
    serves as the test runner.
@@ -80,12 +105,12 @@ trailers, no remote, no push).
 
 7. **No translations or localization** — English only.
 
-8. **Accessibility** — Semantic HTML used; checkbox labels linked. Print CSS
-   hides screen-only content. Could add `lang` attributes per section.
+8. **Accessibility** — Semantic HTML used; checkbox labels present. Print CSS
+   hides screen-only content. Could add per-section `lang` attributes.
 
 All requirements from the prompt are satisfied:
 - ✅ Markdown + printable HTML for 4 planner types
-- ✅ Large-print friendly (16 pt base, large checkboxes, wide cells)
+- ✅ Large-print friendly (16 pt base, large checkboxes, wide writable cells)
 - ✅ No account needed, no tracking
 - ✅ Credit Asdale Dynamics, LLC throughout
 - ✅ MIT LICENSE with exact copyright line

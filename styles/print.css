@@ -111,6 +111,10 @@ label.check {
   margin-right: 14px;
 }
 
+.task {
+  margin: 7px 0;
+}
+
 input.check-box {
   width: 20px;
   height: 20px;

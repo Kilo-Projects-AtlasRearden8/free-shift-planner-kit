@@ -26,9 +26,10 @@ def task_list_to_html(match: re.Match) -> str:
     checked_attr = " checked" if checked.lower() == "x" else ""
     text = text or ""
     return (
-        f'{indent}<label class="check">'
+        f'{indent}<div class="task">'
+        f'<label class="check">'
         f'<input class="check-box" type="checkbox"{checked_attr}> {text}'
-        f"</label>"
+        f"</label></div>"
     )
 
 
@@ -61,6 +62,9 @@ def build_one(md_path: Path) -> str:
     text = TASK_LIST_RE.sub(task_list_to_html, text)
     title = title_from_markdown(text, md_path.stem.replace("-", " ").title())
     body = markdown.markdown(text, extensions=MD_EXTENSIONS)
+    # Every table in these planners is a writable grid; give them the grid
+    # stylesheet class so borders, headers, and writing-space rows render.
+    body = body.replace("<table>", '<table class="grid">')
     return HTML_TEMPLATE.format(title=title, style=STYLE_NAME, body=body)
 
 
